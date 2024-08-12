@@ -1,4 +1,5 @@
 import "./App.css";
+import Ex1 from "./components/ex1";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
       <button className="rounded border-2 border-blue-600 bg-blue-500 px-2 py-1 text-white shadow-md hover:bg-blue-400 active:border-blue-700 active:bg-blue-600 disabled:opacity-50 disabled:hover:bg-blue-500">
         My button 2
       </button>
+
+      <Ex1 />
     </div>
   );
 }
