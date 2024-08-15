@@ -37,14 +37,23 @@ export default function Ex1() {
       </div>
 
       <div className="space-x-1">
-        <input id="terms" type="checkbox" />
-        <label htmlFor="terms">I accept the terms and conditions.</label>
+        <input
+          id="terms"
+          type="checkbox"
+          className="cursor-pointer rounded-[20%] accent-slate-700"
+        />
+        <label htmlFor="terms text-xl ">
+          I accept the terms and conditions.
+        </label>
       </div>
 
       <div className="space-x-2">
         <button className="btn bg-purple-300 hover:text-white">Submit</button>
         <button className="btn text-purple-700 hover:text-black">Reset</button>
-        <button className="btn disabled:opacity-40" disabled>
+        <button
+          className="btn disabled:cursor-not-allowed disabled:opacity-40"
+          disabled
+        >
           Disabled
         </button>
       </div>

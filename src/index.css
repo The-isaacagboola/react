@@ -10,10 +10,10 @@
 
 @layer components {
   .my-input {
-    @apply w-full rounded-md border-2 border-purple-700 p-2;
+    @apply w-full rounded-md border-2 border-purple-700 p-2 caret-purple-900 outline-none ring-red-400 placeholder:text-red-800 focus:ring-2;
   }
   .btn {
-    @apply rounded-md border-2 border-purple-700 p-1 text-base;
+    @apply rounded-md border-2 border-purple-700/90 p-1 text-base;
   }
   .btn:hover {
     @apply border-current;
