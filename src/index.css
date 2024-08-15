@@ -2,11 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  button {
+    @apply cursor-pointer;
+  }
+}
+
 @layer components {
   .my-input {
     @apply w-full rounded-md border-2 border-purple-700 p-2;
   }
   .btn {
     @apply rounded-md border-2 border-purple-700 p-1 text-base;
+  }
+  .btn:hover {
+    @apply border-current;
   }
 }

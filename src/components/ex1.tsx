@@ -42,8 +42,8 @@ export default function Ex1() {
       </div>
 
       <div className="space-x-2">
-        <button className="btn bg-purple-300">Submit</button>
-        <button className="btn text-purple-700">Reset</button>
+        <button className="btn bg-purple-300 hover:text-white">Submit</button>
+        <button className="btn text-purple-700 hover:text-black">Reset</button>
         <button className="btn disabled:opacity-40" disabled>
           Disabled
         </button>
