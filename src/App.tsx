@@ -1,6 +1,8 @@
 import "./App.css";
-import Ex1 from "./components/ex1";
-import Ex2 from "./components/ex2";
+import Project from "./Project/project";
+// import Ex1 from "./components/ex1";
+// import Ex2 from "./components/ex2";
+// import Group from "./components/group";
 
 function App() {
   return (
@@ -27,8 +29,11 @@ function App() {
         My button 2
       </button> */}
 
-      <Ex1 />
+      {/* <Ex1 />
       <Ex2 />
+      <Group /> */}
+
+      <Project />
     </div>
   );
 }

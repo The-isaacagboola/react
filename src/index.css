@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   button {
     @apply cursor-pointer;
   }
@@ -10,7 +10,7 @@
 
 @layer components {
   .my-input {
-    @apply w-full rounded-md border-2 border-purple-700 p-2 caret-purple-900 outline-none ring-red-400 placeholder:text-red-800 focus:ring-2;
+    @apply w-full rounded-md border-2 p-2 outline-none ring-red-400 placeholder:text-red-800 focus:ring-2;
   }
   .btn {
     @apply rounded-md border-2 border-purple-700/90 p-1 text-base;
@@ -19,3 +19,7 @@
     @apply border-current;
   }
 }
+.basic {
+  color: red;
+} */
+/* classes defined externally works too */

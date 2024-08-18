@@ -3,8 +3,8 @@ export default function Ex2() {
     <div className="mt-4 text-xl">
       <h1 className="text-center text-3xl font-bold">Heading</h1>
       <p>The red backgound up in the inputs there was achieved with a ring </p>
-      <div className="h-10 w-full bg-red-500 text-center">
-        <p className="my-auto">Hi</p>
+      <div className="flex h-10 w-full items-center justify-center bg-red-500 text-center">
+        <p className="my-auto text-white">Hi</p>
       </div>
 
       <div>
@@ -34,9 +34,11 @@ export default function Ex2() {
           type="checkbox"
           placeholder="Enter Email Address"
         />
-        <label htmlFor="check" className="peer-checked:visible">
+        <label htmlFor="check" className="peer-checked:text-green-500">
           I consent to all the rules and regulations
         </label>
+
+        <button className="btn hidden peer-checked:visible"> Submit</button>
       </div>
     </div>
   );
