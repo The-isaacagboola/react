@@ -1,4 +1,5 @@
 import "./App.css";
+import Context from "./Project/context";
 import Project from "./Project/project";
 // import Ex1 from "./components/ex1";
 // import Ex2 from "./components/ex2";
@@ -32,8 +33,9 @@ function App() {
       {/* <Ex1 />
       <Ex2 />
       <Group /> */}
-
-      <Project />
+      <Context>
+        <Project />
+      </Context>
     </div>
   );
 }
