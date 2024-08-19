@@ -4,7 +4,7 @@
 
 @layer components {
   .span {
-    transition: 0.2s ease;
+    transition: 0.2s ease-in-out;
   }
   .span:hover {
     @apply font-bold text-primary-ModerateBlue;

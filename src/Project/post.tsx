@@ -1,5 +1,7 @@
-export default function Post({ comment }) {
-  console.log(comment);
+type Comment = {
+  comment: any;
+};
+export default function Post({ comment }: Comment) {
   return (
     <div className="mb-5 flex rounded-xl bg-neutral-White p-6">
       <p className="mr-4 flex max-h-[110px] flex-col items-center gap-2 rounded-md bg-neutral-LightGray px-2 py-1 text-xl text-primary-LightGrayishBlue">
@@ -16,12 +18,12 @@ export default function Post({ comment }) {
               src={comment.user.image.png}
               alt="display picture"
             />
-            <p className="font-bold text-neutral-DarkBlue">
+            <p className="font-bold text-neutral-DarkBlue/90">
               {comment.user.username}
             </p>
             <p className="text-neutral-GrayishBlue">{comment.createdAt}</p>
           </div>
-          <div className="flex cursor-pointer items-center gap-2 object-contain">
+          <div className="flex cursor-pointer items-center gap-2 object-contain hover:opacity-80">
             <img
               className="h-4"
               src="./images/icon-reply.svg"
