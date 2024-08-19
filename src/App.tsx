@@ -6,7 +6,7 @@ import Project from "./Project/project";
 
 function App() {
   return (
-    <div className="mx-[50px]">
+    <div>
       {/* <h1 className="mt-4 text-center text-3xl font-bold text-gray-600">
         Tailwind CSS
       </h1>

@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .span {
+    transition: 0.2s ease;
+  }
+  .span:hover {
+    @apply font-bold text-primary-ModerateBlue;
+  }
+}
 /* @layer base {
   button {
     @apply cursor-pointer;
@@ -23,3 +31,9 @@
   color: red;
 } */
 /* classes defined externally works too */
+*,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
