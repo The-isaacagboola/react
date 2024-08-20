@@ -1,19 +1,22 @@
 import Post from "./post";
 import { usePostContext } from "./context";
-import Comment from "./Comment";
-import { Key } from "react";
+import MakeComment from "./Comment";
 
 export default function Project() {
   const data = usePostContext();
   const Posts = data[0];
+  // console.log(data);
+
   return (
     <div className="flex h-full w-full items-center justify-center bg-neutral-LightGray text-base">
       <div className="mt-12 w-[650px]">
-        {Posts.comments.map((comment: { id: Key | null | undefined }) => (
-          <Post key={comment.id} comment={comment} />
-        ))}
+        <div className="flex flex-col gap-5">
+          {Posts.comments.map((comment) => (
+            <Post key={comment.id} comment={comment} />
+          ))}
+        </div>
 
-        <Comment />
+        <MakeComment user={Posts.currentUser} />
       </div>
     </div>
   );
