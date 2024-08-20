@@ -53,7 +53,7 @@ export default function Context({ children }: Children) {
   const [data, setData] = UseLocalStorage("Posts", JSON.stringify(Posts));
 
   function makeNewPost(newComment: Omit<Comment, "id">): void {
-    setData((prevData) => ({
+    setData((prevData: Data) => ({
       ...prevData,
       comments: [
         ...prevData.comments,
@@ -64,6 +64,12 @@ export default function Context({ children }: Children) {
       ],
     }));
   }
+
+  // function effectScore(arg: "increment" | "decrement") {
+  //   if (arg === "increment") {
+
+  //   }
+  // }
 
   return (
     <postContext.Provider value={[data, setData, makeNewPost]}>

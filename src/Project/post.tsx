@@ -12,16 +12,43 @@ export default function Post({ comment }: PostProps) {
   const content = usePostContext();
   const userName = content[0].currentUser.username;
 
+  function formatTimeAgo(timeInMilliseconds: string | number): string {
+    if (typeof timeInMilliseconds !== "string") {
+      const timeDistance = Date.now() - timeInMilliseconds;
+      const days = Math.floor(timeDistance / (24 * 60 * 60 * 1000));
+      const hours = Math.floor(timeDistance / (60 * 60 * 1000));
+      const minutes = Math.floor(timeDistance / (60 * 1000));
+
+      if (days > 0) {
+        return `${days} day${days > 1 ? "s" : ""} ago`;
+      } else if (hours > 0) {
+        return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+      } else {
+        return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      }
+    } else return timeInMilliseconds;
+  }
+
   return (
     <div>
       <div className="flex rounded-xl bg-neutral-White p-6">
-        <p className="mr-4 flex max-h-[110px] flex-col items-center gap-2 rounded-md bg-neutral-LightGray px-2 py-1 text-xl text-primary-LightGrayishBlue">
-          <span className="span cursor-pointer">+</span>
+        <div className="mr-4 flex max-h-[110px] flex-col items-center gap-2 rounded-md bg-neutral-LightGray px-2 py-1 text-xl text-primary-LightGrayishBlue">
+          <button
+            onClick={() => effectScore("increment")}
+            className="span cursor-pointer"
+          >
+            +
+          </button>
           <span className="text-primary-ModerateBlue">{comment.score}</span>
-          <span className="span cursor-pointer">-</span>
-        </p>
+          <button
+            onClick={() => effectScore("decrement")}
+            className="span cursor-pointer"
+          >
+            -
+          </button>
+        </div>
 
-        <div>
+        <div className="w-full">
           <div className="mb-4 flex h-fit w-full justify-between">
             <div className="flex h-6 items-center gap-2 object-contain">
               <img
@@ -39,7 +66,9 @@ export default function Post({ comment }: PostProps) {
                 </p>
               ) : null}
 
-              <p className="text-neutral-GrayishBlue">{comment.createdAt}</p>
+              <p className="text-neutral-GrayishBlue">
+                {formatTimeAgo(comment.createdAt)}
+              </p>
             </div>
 
             {comment.user.username !== userName ? (
@@ -73,7 +102,14 @@ export default function Post({ comment }: PostProps) {
           </div>
 
           <div>
-            <p className="text-neutral-GrayishBlue">{comment.content}</p>
+            <p className="text-neutral-GrayishBlue">
+              {comment.replyingTo ? (
+                <span className="font-semibold text-primary-ModerateBlue">
+                  @{comment.replyingTo}{" "}
+                </span>
+              ) : null}
+              {comment.content}
+            </p>
           </div>
         </div>
       </div>

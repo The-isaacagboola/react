@@ -6,7 +6,7 @@ interface ReplyProps {
 export default function ReplyComponent({ replies }: ReplyProps) {
   //   console.log(replies);
   return (
-    <div className="flex p-5">
+    <div className="flex py-5">
       <div className="mx-10 max-h-max w-2 rounded-md bg-neutral-GrayishBlue/40"></div>
       <div className="flex flex-col gap-5">
         {replies.map((reply) => (

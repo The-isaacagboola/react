@@ -35,13 +35,14 @@ export default function MakeComment({ user }: CommentProps) {
     replies: [],
   });
 
-  function applyComment(e) {
+  function applyComment(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setTypedComment(e.target.value);
   }
 
   function sendPost() {
     console.log(typedComment, template);
     sendPostFn(template);
+    setTypedComment("");
   }
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function MakeComment({ user }: CommentProps) {
 
       <textarea
         className="border-primary max-h-[80px] min-h-20 w-full rounded-lg border-2 p-2 text-neutral-GrayishBlue/60 outline-none"
+        value={typedComment}
         placeholder="Add a comment..."
         onChange={applyComment}
       />
