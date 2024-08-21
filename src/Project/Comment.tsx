@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Comment, usePostContext } from "./context";
+import { Reply } from "./context";
 interface Image {
   png: string;
   webp: string;
@@ -12,15 +13,24 @@ interface User {
 
 type CommentProps = {
   user: User;
+  replying: boolean;
+  id: number;
+  setOpenReplyBox?: any;
 };
 
-export default function MakeComment({ user }: CommentProps) {
+export default function MakeComment({
+  replying = false,
+  user,
+  id,
+  setOpenReplyBox,
+}: CommentProps) {
   const delegate = usePostContext();
+  const replyPostFn = delegate[3];
 
   const sendPostFn = delegate[2];
 
   const [typedComment, setTypedComment] = useState("");
-  const [template, setTemplate] = useState<Comment>({
+  const [template, setTemplate] = useState<Comment | Reply>({
     id: 1,
     content: typedComment,
     createdAt: Date.now(),
@@ -41,8 +51,18 @@ export default function MakeComment({ user }: CommentProps) {
 
   function sendPost() {
     console.log(typedComment, template);
-    sendPostFn(template);
-    setTypedComment("");
+    if (typedComment.trim() !== "") {
+      sendPostFn(template);
+      setTypedComment("");
+    } else return;
+  }
+
+  function sendReply(id: number) {
+    if (typedComment.trim() !== "") {
+      replyPostFn(id, template);
+      setTypedComment("");
+      setOpenReplyBox(false);
+    } else return;
   }
 
   useEffect(() => {
@@ -52,7 +72,7 @@ export default function MakeComment({ user }: CommentProps) {
     }));
   }, [typedComment]);
   return (
-    <div className="mt-4 flex gap-4 rounded-lg bg-neutral-White p-4">
+    <div className="mb-6 mt-4 flex gap-4 rounded-lg bg-neutral-White p-4">
       <img
         className="h-[40px] w-[40px]"
         src={user.image.png}
@@ -68,7 +88,7 @@ export default function MakeComment({ user }: CommentProps) {
 
       <button
         className="h-fit rounded-lg bg-primary-ModerateBlue px-4 py-2 text-neutral-VeryLightGray"
-        onClick={sendPost}
+        onClick={replying ? () => sendReply(id) : sendPost}
       >
         SEND
       </button>

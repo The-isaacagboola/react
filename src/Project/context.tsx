@@ -45,7 +45,13 @@ type Children = { children: ReactNode };
 // type MakeNewPost = () => void;
 
 const postContext = createContext<
-  [Data, React.Dispatch<React.SetStateAction<Data>>, (arg1: any) => void] | null
+  | [
+      Data,
+      React.Dispatch<React.SetStateAction<Data>>,
+      (newComment: Comment) => void,
+      (id: number, reply: Reply) => void,
+    ]
+  | null
 >(null);
 
 // const postContext = createContext(null);
@@ -65,6 +71,26 @@ export default function Context({ children }: Children) {
     }));
   }
 
+  function insertReply(id: number, reply: Reply): void {
+    const copyData = { ...data };
+
+    const commentIndex = copyData.comments.findIndex(
+      (comment: Comment) => comment.id === id,
+    );
+
+    if (commentIndex !== -1) {
+      if (!copyData.comments[commentIndex].replies) {
+        copyData.comments[commentIndex].replies = [];
+      }
+      copyData.comments[commentIndex].replies!.push(reply);
+
+      console.log(copyData);
+      setData(copyData);
+    } else {
+      console.error(`Comment with id ${id} not found`);
+    }
+  }
+
   // function effectScore(arg: "increment" | "decrement") {
   //   if (arg === "increment") {
 
@@ -72,7 +98,7 @@ export default function Context({ children }: Children) {
   // }
 
   return (
-    <postContext.Provider value={[data, setData, makeNewPost]}>
+    <postContext.Provider value={[data, setData, makeNewPost, insertReply]}>
       {children}
     </postContext.Provider>
   );
