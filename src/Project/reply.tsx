@@ -4,7 +4,7 @@ interface ReplyProps {
   replies: Reply[];
 }
 export default function ReplyComponent({ replies }: ReplyProps) {
-  //   console.log(replies);
+  // console.log(replies);
   return (
     <div className="flex py-5">
       <div className="mx-10 max-h-max w-1 rounded-md bg-neutral-GrayishBlue/40"></div>

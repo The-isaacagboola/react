@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 import UseLocalStorage from "../components/useLocalStorage";
 import Posts from "../assets/data.json";
 
@@ -18,7 +18,7 @@ interface User {
 export type Reply = {
   id: number;
   content: string;
-  createdAt: string;
+  createdAt: string | number;
   score: number;
   replyingTo: string;
   user: User;
@@ -44,19 +44,20 @@ export type Data = {
 type Children = { children: ReactNode };
 // type MakeNewPost = () => void;
 
-const postContext = createContext<
-  | [
-      Data,
-      React.Dispatch<React.SetStateAction<Data>>,
-      (newComment: Comment) => void,
-      (id: number, reply: Reply) => void,
-    ]
-  | null
->(null);
+const postContext = createContext<{
+  comments: Comment[];
+  currentUser: User;
+  setData: React.Dispatch<React.SetStateAction<Data>>;
+  makeNewPost: (arg: Comment) => void;
+  insertReply: (id: number, reply: Reply) => void;
+  next: number;
+} | null>(null);
 
 // const postContext = createContext(null);
 export default function Context({ children }: Children) {
   const [data, setData] = UseLocalStorage("Posts", JSON.stringify(Posts));
+
+  const { comments, currentUser } = data;
 
   function makeNewPost(newComment: Omit<Comment, "id">): void {
     setData((prevData: Data) => ({
@@ -84,21 +85,46 @@ export default function Context({ children }: Children) {
       }
       copyData.comments[commentIndex].replies!.push(reply);
 
-      console.log(copyData);
       setData(copyData);
     } else {
       console.error(`Comment with id ${id} not found`);
+
+      const copyComments = copyData.comments;
+      // console.log(reply, id); //////adjust the replies you are working on at the bottom
+      let commentIndex: number;
+      copyComments.forEach((item: Comment) => {
+        const replies = item.replies;
+        const target = replies.find((reply) => reply.id === id);
+        if (target) {
+          commentIndex = item.id;
+        }
+      });
+      // console.log(commentIndex, id);
+      const newArray = copyComments.map((item) => {
+        if (item.id === commentIndex) {
+          const theComment = item;
+          theComment.replies.push(reply);
+          return { ...item, ...theComment };
+        } else return item;
+      });
+      console.log(newArray);
     }
   }
 
-  // function effectScore(arg: "increment" | "decrement") {
-  //   if (arg === "increment") {
-
-  //   }
-  // }
+  const next = useMemo(() => {
+    const comments = data.comments;
+    const aggregatedReplies = comments.reduce((acc: number, item: Comment) => {
+      acc += 1;
+      if (item.replies) return (acc += item.replies.length);
+      else return (acc += 1);
+    }, 0);
+    return aggregatedReplies;
+  }, [data]);
 
   return (
-    <postContext.Provider value={[data, setData, makeNewPost, insertReply]}>
+    <postContext.Provider
+      value={{ comments, currentUser, setData, makeNewPost, insertReply, next }}
+    >
       {children}
     </postContext.Provider>
   );

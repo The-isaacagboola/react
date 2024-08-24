@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Comment, usePostContext } from "./context";
+import { usePostContext } from "./context";
 import { Reply } from "./context";
 interface Image {
   png: string;
@@ -14,27 +14,28 @@ interface User {
 type CommentProps = {
   user: User;
   replying: boolean;
+  replyingTo?: string;
   id: number;
-  setOpenReplyBox?: any;
+  setOpenReplyBox?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MakeComment({
   replying = false,
+  replyingTo,
   user,
   id,
   setOpenReplyBox,
 }: CommentProps) {
   const delegate = usePostContext();
-  const replyPostFn = delegate[3];
-
-  const sendPostFn = delegate[2];
+  const { makeNewPost, insertReply, next } = delegate;
 
   const [typedComment, setTypedComment] = useState("");
-  const [template, setTemplate] = useState<Comment | Reply>({
-    id: 1,
+  const [template, setTemplate] = useState<Reply>({
+    id: next + 1,
     content: typedComment,
     createdAt: Date.now(),
     score: 0,
+    replyingTo: replyingTo,
     user: {
       image: {
         png: user.image.png,
@@ -42,7 +43,6 @@ export default function MakeComment({
       },
       username: user.username,
     },
-    replies: [],
   });
 
   function applyComment(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -52,14 +52,15 @@ export default function MakeComment({
   function sendPost() {
     console.log(typedComment, template);
     if (typedComment.trim() !== "") {
-      sendPostFn(template);
+      makeNewPost(template);
       setTypedComment("");
     } else return;
   }
 
   function sendReply(id: number) {
-    if (typedComment.trim() !== "") {
-      replyPostFn(id, template);
+    if (typedComment.trim() !== "" && setOpenReplyBox && replyingTo) {
+      setTemplate((prevTemp) => ({ ...prevTemp, replyingTo: replyingTo }));
+      insertReply(id, template);
       setTypedComment("");
       setOpenReplyBox(false);
     } else return;

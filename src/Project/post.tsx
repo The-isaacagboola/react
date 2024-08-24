@@ -12,9 +12,10 @@ type PostProps = {
 
 export default function Post({ comment }: PostProps) {
   const [openReplyBox, setOpenReplyBox] = useState(false);
-  const content = usePostContext();
-  const userName = content[0].currentUser.username;
-  const currentUser = content[0].currentUser;
+  const [replyingTo, setReplyingTo] = useState("");
+  const { currentUser } = usePostContext();
+  const userName = currentUser.username;
+  // const currentUser = content[0].currentUser;
 
   function formatTimeAgo(timeInMilliseconds: string | number): string {
     if (typeof timeInMilliseconds !== "string") {
@@ -33,23 +34,19 @@ export default function Post({ comment }: PostProps) {
     } else return timeInMilliseconds;
   }
 
+  function handleReply() {
+    setOpenReplyBox((prev) => !prev);
+    setReplyingTo(comment.user.username);
+    // console.log(replyingTo);
+  }
+
   return (
     <div>
       <div className="flex rounded-xl bg-neutral-White p-6">
         <div className="mr-4 flex max-h-[110px] flex-col items-center gap-2 rounded-md bg-neutral-LightGray px-2 py-1 text-xl text-primary-LightGrayishBlue">
-          <button
-            // onClick={() => effectScore("increment")}
-            className="span cursor-pointer"
-          >
-            +
-          </button>
+          <button className="span cursor-pointer">+</button>
           <span className="text-primary-ModerateBlue">{comment.score}</span>
-          <button
-            // onClick={() => effectScore("decrement")}
-            className="span cursor-pointer"
-          >
-            -
-          </button>
+          <button className="span cursor-pointer">-</button>
         </div>
 
         <div className="w-full">
@@ -83,7 +80,7 @@ export default function Post({ comment }: PostProps) {
                   alt="reply icon"
                 />
                 <p
-                  onClick={() => setOpenReplyBox((prev) => !prev)}
+                  onClick={handleReply}
                   className="text-base font-bold text-primary-ModerateBlue"
                 >
                   Reply
@@ -125,6 +122,7 @@ export default function Post({ comment }: PostProps) {
         <MakeComment
           id={comment.id}
           replying={true}
+          replyingTo={replyingTo}
           user={currentUser}
           setOpenReplyBox={setOpenReplyBox}
         />
