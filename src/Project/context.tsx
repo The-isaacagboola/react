@@ -66,7 +66,7 @@ export default function Context({ children }: Children) {
         ...prevData.comments,
         {
           ...newComment,
-          id: prevData.comments.length + 1,
+          id: next + 1,
         },
       ],
     }));
@@ -90,7 +90,10 @@ export default function Context({ children }: Children) {
       console.error(`Comment with id ${id} not found`);
 
       const copyComments = copyData.comments;
+      console.log("copycomments", copyComments);
       // console.log(reply, id); //////adjust the replies you are working on at the bottom
+
+      /*
       let commentIndex: number;
       copyComments.forEach((item: Comment) => {
         const replies = item.replies;
@@ -99,24 +102,40 @@ export default function Context({ children }: Children) {
           commentIndex = item.id;
         }
       });
+      */
+
       // console.log(commentIndex, id);
-      const newArray = copyComments.map((item) => {
-        if (item.id === commentIndex) {
-          const theComment = item;
-          theComment.replies.push(reply);
-          return { ...item, ...theComment };
+
+      /*
+        if (item.id === id && item.replies) {
+          console.log(id, item);
+          return item.replies.push(reply);
         } else return item;
+      */
+      const newArray = copyComments.map((comment: Comment) => {
+        if (comment.replies?.some((reply) => reply.id === id)) {
+          console.log("coming");
+          // comment.replies.push(reply);
+          console.log({ ...comment, replies: [...comment.replies, reply] });
+          return comment;
+        } else return comment;
       });
       console.log(newArray);
+
+      setData({ ...copyData, comments: { ...newArray } });
     }
   }
 
   const next = useMemo(() => {
     const comments = data.comments;
+    console.log(comments);
     const aggregatedReplies = comments.reduce((acc: number, item: Comment) => {
       acc += 1;
-      if (item.replies) return (acc += item.replies.length);
-      else return (acc += 1);
+      console.log(acc);
+
+      if (item.replies) {
+        return (acc += item.replies.length);
+      } else return (acc += 1);
     }, 0);
     return aggregatedReplies;
   }, [data]);
